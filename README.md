@@ -2,9 +2,18 @@ passerelle_data_IOT
 
 
 infos a stocker en base:
-* id  (auto-increment)
 * timestamp
 * id_compteur
+
+
+
+measurement: mesures
+
+tags:
+* id_compteur
+* option_tarifaire?
+
+fields:
 * puissance apparente
 * conso compteur totale
 * politique tarifaire (Tarif en cours)
@@ -12,7 +21,23 @@ infos a stocker en base:
 
 
 
-
 http://192.168.20.104/api/xdevices.json?cmd=10
 
-https://www.hivemq.com/blog/mqtt-client-library-enyclopedia-hivemq-mqtt-client/
+ https://www.hivemq.com/blog/mqtt-client-library-enyclopedia-hivemq-mqtt-client/
+
+
+
+insert compteur_id 
+
+grafana login: admin admin
+
+docker exec -it mosquitto sh 
+
+mosquitto_pub -t 'data' -m '1256 12 200'
+
+
+
+docker exec -it influxdb sh
+
+shows SERIES on compteur
+
