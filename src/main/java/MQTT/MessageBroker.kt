@@ -2,26 +2,26 @@ package MQTT
 
 import java.util.UUID
 import com.hivemq.client.mqtt.MqttClient
-import com.hivemq.client.mqtt.mqtt3.Mqtt3AsyncClient
-import com.hivemq.client.mqtt.datatypes.MqttQos
-
-
-
+import java.sql.Time
+import java.sql.Timestamp
+import java.time.Instant
 
 
 class MessageBroker {
+    var serverIP = "192.168.99.100"
+    var port = 1883
+
     var client = MqttClient.builder()
         .useMqttVersion3()
         .identifier(UUID.randomUUID().toString())
-        .serverHost("192.168.99.100")
-        .serverPort(1883)
+        .serverHost(serverIP)
+        .serverPort(port)
         .buildAsync()
 
     init {
         println("iot")
         client.connectWith()
             .send()
-        println("2222222222222")
     }
 
     var username="root"
@@ -37,10 +37,12 @@ class MessageBroker {
 
     }
 
-    fun sendMessageToServer(msg: String){
+    fun sendMessageToServer(msg: String, id: Int){
+        val timeStamp=Time.from(Instant.now()).time
+        val data=timeStamp.toString()+" "+id.toString()+" "+msg; // timestamp + id_compteur + puissance apparente + consommation totale
         client.publishWith()
             .topic("data")
-            .payload("rr".toByteArray())
+            .payload(data.toByteArray())
             .send()
     }
 }
